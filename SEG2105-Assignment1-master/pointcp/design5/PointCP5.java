@@ -10,6 +10,8 @@ public abstract class PointCP5 {
 
     protected double xOrRho;
 
+    protected double yOrTheta;
+
     public abstract double getX();
 
     public abstract double getY();

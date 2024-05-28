@@ -1,63 +1,133 @@
 package pointcp.design5;
+// This file contains material supporting section 2.9 of the textbook:
+
+// "Object Oriented Software Engineering" and is issued under the open-source
+// license found at www.lloseng.com 
+
+import java.util.Scanner;
 
 /**
- * 
- * This class represents the abstract idea of a point. It will be specialized
- * using PointCP2 and PointCP3
- * which represent polar and cartesian points respectively.
- * 
+ * This class prompts the user for a set of coordinates, and then
+ * converts them from polar to cartesian or vice-versa.
  *
+ * @author Fran&ccedil;ois B&eacute;langer
+ * @author Dr Timothy C. Lethbridge
+ * @author Paul Holden
  */
+public class PointCP5Test {
 
-public abstract class PointCP5Test {
-	/**
-	 * Contains the current value of X or RHO
-	 */
-	protected double xOrRho;
+	public static void main(String[] args) {
+		PointCP5 point;
+		PointCP5 newPoint;
 
-	/**
-	 * Contains the current value of Y or THETA
-	 */
-	protected double yOrTheta;
+		System.out.println("Cartesian-Polar Coordinates Conversion Program");
 
-	/**
-	 * Constructs a coordinate object
-	 */
-	public PointCP5Test(double xOrRho, double yOrTheta) {
+		// Call the method that prompts the user for inputs
+		point = getInput();
 
-		this.xOrRho = xOrRho;
-		this.yOrTheta = yOrTheta;
+		System.out.println("\nYou entered:\n" + point);
+		newPoint = point.convertStorageToCartesian();
+		System.out.println("\nAfter asking to store as Cartesian:\n" + newPoint);
+		newPoint = point.convertStorageToPolar();
+		System.out.println("\nAfter asking to store as Polar:\n" + newPoint);
 
 	}
 
-	public abstract double getX();
-
-	public abstract double getY();
-
-	public abstract double getRho();
-
-	public abstract double getTheta();
-
-	public abstract PointCP5Test convertStorageToCartesian();
-
-	public abstract PointCP5Test convertStorageToPolar();
-
-	public abstract String toString();
-
 	/**
-	 * Calculates the distance in between two points using the Pythagorean
-	 * theorem (C ^ 2 = A ^ 2 + B ^ 2).
+	 * This method obtains input from the user and verifies that
+	 * it is valid. When the input is valid, it returns a PointCP5
+	 * object.
 	 *
-	 * @param pointA The first point.
-	 * @param pointB The second point.
-	 * @return The distance between the two points.
+	 * @return A PointCP5 constructed using information obtained
+	 *         from the user.
 	 */
-	public double getDistance(PointCP5Test pointB) {
+	private static PointCP5 getInput() {
 
-		double deltaX = getX() - pointB.getX();
-		double deltaY = getY() - pointB.getY();
+		Scanner scanner = new Scanner(System.in);
 
-		return Math.sqrt((Math.pow(deltaX, 2) + Math.pow(deltaY, 2)));
+		char coordType = 'A';
+		String input;
+
+		double a = 0.0;
+		double b = 0.0;
+
+		// Read the coordinates type
+
+		do {
+
+			System.out.print("Enter the type of Coordinates you "
+					+ "are inputting ((C)artesian / (P)olar): ");
+
+			// Read from console
+			input = scanner.nextLine();
+
+			// Set to upper case in case the user enter a lowercase character
+			input = input.toUpperCase();
+
+			if (input.charAt(0) == 'C')
+				coordType = 'C'; // Temporary default, to be set to P or C
+			else if (input.charAt(0) == 'P')
+				coordType = 'P';
+			else
+				System.out.println("Inorrect input. Please enter the letter 'C' or 'P'.");
+
+		} while (coordType == 'A');
+
+		// Read the first coordinate
+		boolean readOk = false; // flag that indicates whether the coordinate value is valid
+
+		while (!readOk) {
+
+			System.out.print("Enter the value of "
+					+ (coordType == 'C' ? "X " : "Rho ")
+					+ "using a decimal point(.): ");
+
+			input = scanner.next();
+
+			try {
+
+				a = Double.valueOf(input).doubleValue();
+				readOk = true;
+			} catch (NumberFormatException e) {
+				readOk = false;
+				System.out.println("Inorrect input. Please enter a valid decimal number.");
+			}
+
+		}
+
+		// Read the second coordinate
+		readOk = false; // reset the flag
+		while (!readOk) {
+
+			System.out.print("Enter the value of "
+					+ (coordType == 'C' ? "Y " : "Theta ")
+					+ "using a decimal point(.): ");
+
+			input = scanner.next();
+
+			try {
+
+				b = Double.valueOf(input).doubleValue();
+				readOk = true;
+			} catch (NumberFormatException e) {
+				readOk = false;
+				System.out.println("Inorrect input. Please enter a valid decimal number.");
+			}
+
+		}
+
+		scanner.close(); // close the scanner
+
+		// Return a new PointCP2 or PointCP3 object
+		PointCP5 point;
+
+		if (coordType == 'P') {
+			point = new PointCP2(a, b);
+		} else {
+			point = new PointCP3(a, b);
+		}
+
+		return point;
 	}
 
 }
