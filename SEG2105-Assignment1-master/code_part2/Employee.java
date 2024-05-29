@@ -13,4 +13,9 @@ public class Employee {
         this.rate = rate;
 
     }
+
+    public String toString() {
+        return ("L'employe du nom de " + name + " a "
+                + hours + " heures et un salaire de " + rate + "$");
+    }
 }
