@@ -1,0 +1,105 @@
+class Student {
+  int studentNumber;
+  String name;
+  String email;
+  String cellPhoneNumber;
+  void makeNote();
+  void commentNote();
+  void answerQuestion();
+  void viewGrades();
+  void viewCourses();
+  
+   *--* Question;
+   *--* Note; 
+}
+
+class Professor {
+  int professorID;
+  String name;
+  String email;
+  void createQuestion();
+  void editClassList();
+  void createCourse();
+  void createNote();
+  void createTournament();
+  *--* Question; 
+}
+
+class Course {
+  String courseCode;
+  String title;
+  String semester;
+  Date date;
+  Boolean status;
+  String description;
+  void viewStudents();
+  void viewPosts();
+  void addStudent();
+  void removeStudent();
+  void updateStatus();
+  1 -- 1 Professor; 
+  1--* Post; 
+}
+
+class Post {
+  int postID;
+  String tag;
+  Boolean isPrivate;
+  void createPost();
+  void viewPost();
+  void editPost();
+  void deletePost();
+  void tagPost();
+  
+ *--* Professor; 
+ *--* Student; 
+ *--1 Course; 
+}
+
+class Note {
+  String summary;
+  String details;
+  void addToReadingList();
+  void sendViaEmail();
+  void viewNote();
+  void editNote();
+  void deleteNote();
+}
+
+class Question {
+  String text;
+  double gradeForAttempt;
+  double gradeForCorrect;
+  String status;
+  Date dueDate;
+  void addPossibleAnswer();
+  void markCorrectAnswer();
+  void setStatus();
+  void setDueDate();
+  void viewQuestion();
+  1--* PossibleAnswer; 
+}
+
+class PossibleAnswer {
+  String answerText;
+  Boolean isCorrect;
+}
+
+class Tournament {
+  int tournamentID;
+  Date startDateTime;
+  int numRounds;
+  int maxAttemptsPerQuestion;
+  int roundLength;
+  double participationWeight;
+  double correctnessWeight;
+  double penaltyForIncorrect;
+  void startTournament();
+  void viewLeaderboard();
+  void endTournament();
+  void addQuestion();
+  void removeQuestion();
+  
+  *--1 Professor;
+  *--* Question; 
+}
